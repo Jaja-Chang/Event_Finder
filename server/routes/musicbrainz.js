@@ -61,8 +61,18 @@ function createPage(title, rsp) {
     return str;
 }
 
-function fixedEncodeURI(str) {
-    return encodeURI(str).replace(/%5B/g, '[').replace(/%5D/g, ']');
-}
+// function createPage(title, rsp) {
+//     const str = '<!DOCTYPE html>' + 
+//             '<html><head><title>Discogs JSON</title></head>' + 
+//             '<body>' + 
+//             '<h1>' + title + '</h1>' + 
+//             rsp +
+//             '</body></html>';
+//     return str;
+// }
+
+// function fixedEncodeURI(str) {
+//     return encodeURI(str).replace(/%5B/g, '[').replace(/%5D/g, ']');
+// }
 
 module.exports = router;
