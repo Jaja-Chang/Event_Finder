@@ -3,21 +3,15 @@ const { response } = require('express');
 const https = require('https');
 const axios = require('axios');
 
-
 const router = express.Router();
 
 router.get('/:query', (req, res) => {
-    const url = `https://api.seatgeek.com/2/events?client_id=${dis.clientId}&performers.slug=${req.params.query}`;
+    console.log("Looking for: ", req.params.query);
+    const encoded_artist = encodeURIComponent(req.params.query);
+    const url = `https://api.seatgeek.com/2/events?client_id=${dis.clientId}&performers.slug=${encoded_artist}`;
     axios.get(url)
         .then( (response) => {
-            res.writeHead(response.status, {'content-type': 'text/html'}); 
-            return response.data;
-        })
-        .then( (rsp) => {
-            // console.log(rsp);
-            const s = createPage('Seatgeek Search', getEventInfo(rsp));
-            res.write(s);
-            res.end();
+            res.json(getEventInfo(response.data));
         })
         .catch( (error) => {
             console.error(error);
@@ -31,37 +25,43 @@ const dis = {
 };
 
 function getEventInfo(rsp) {
-    const event_len = rsp.events.length;
-    let s = "";
-    let address_str = "";
-    let current_event = "";
-    let current_string = "";
-    let vanue_latlon = "";
+    let json_file = [];
 
     s = '<div>There are ' + rsp.meta.total + ' events in total.</div>';
-    for (let i = 0; i < event_len; i++) {
-        current_event = rsp.events[i];
-        address_str = current_event.venue.address + ', ' + 
-            current_event.venue.city + ' ' + 
+    for (let i = 0; i < rsp.events.length; i++) {
+        let current_event = rsp.events[i];
+        let address_str = current_event.venue.address + ', ' + 
+            current_event.venue.city + ', ' + 
             current_event.venue.country + ' (' + 
             current_event.venue.extended_address + ') ';
-        vanue_latlon = current_event.venue.location.lat + '%2C' + current_event.venue.location.lon;
+        let vanue_latlon = current_event.venue.location.lat + '%2C' + current_event.venue.location.lon;
+        let datetime = current_event.datetime_utc.split("T")
+        let date = datetime[0];
+        let time = datetime[1];
+
+        json_file.push({"title": current_event.title, 
+                        "date": date,
+                        "time": time,
+                        "venue": current_event.venue.name,
+                        "location": address_str,
+                        "url": current_event.url,
+                        "latlon": vanue_latlon});
         
-        current_string = '<div>' + 
-                            '<div>' + 
-                                current_event.title + 
-                            '</div>' + 
-                            '<div>' +
-                                'Time (UTC): ' + current_event.datetime_utc + '<br>' + 
-                                'Venue: ' +  current_event.venue.name + '<br>' + 
-                                'Location: ' + address_str + '<br>' + 
-                                '<a href=' + current_event.url + '>More information here</a><br>' + 
-                                '<a href=' + `http://localhost:3000/googlemap/${vanue_latlon}` + '>Hotel nearby</a><br>' + 
-                                '<br>' + 
-                            '</div>';
-        s += current_string;
+        // current_string = '<div>' + 
+        //                     '<div>' + 
+        //                         current_event.title + 
+        //                     '</div>' + 
+        //                     '<div>' +
+        //                         'Time (UTC): ' + current_event.datetime_utc + '<br>' + 
+        //                         'Venue: ' +  current_event.venue.name + '<br>' + 
+        //                         'Location: ' + address_str + '<br>' + 
+        //                         '<a href=' + current_event.url + '>More information here</a><br>' + 
+        //                         '<a href=' + `http://localhost:3000/googlemap/${vanue_latlon}` + '>Hotel nearby</a><br>' + 
+        //                         '<br>' + 
+        //                     '</div>';
+        // s += current_string;
     }
-    return s;
+    return json_file;
 }
 
 function createPage(title, rsp) {

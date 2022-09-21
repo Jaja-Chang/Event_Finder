@@ -3,7 +3,6 @@ const { response } = require('express');
 const https = require('https');
 const axios = require('axios');
 
-
 const router = express.Router();
 
 router.get('/:query', (req, res) => {
@@ -11,25 +10,12 @@ router.get('/:query', (req, res) => {
 
     axios.get(url)
         .then( (response) => {
-            // res.writeHead(response.status, {'content-type': 'text/html; charset=utf-8'}); 
-            // return response.data;
             res.json(getArtists(response.data));
         })
         .catch( (error) => {
             console.error(error);
         })
-        // .then( (rsp) => {
-        //     const s = createPage('MusicBrainz Search', getArtists(rsp));
-        //     res.write(s);
-        //     res.end();
-        // })
 })
-
-
-const dis = {
-    consumerKey: 'GQVelrWQttRjAJswGVOj',
-    consumerSecret: 'LwITTZJVKlaepvZhCKToAWiXCrkkGajd'
-};
 
 function getArtists(rsp) {
     let json_file = [];
@@ -37,31 +23,11 @@ function getArtists(rsp) {
     for (let i = 0; i < rsp.artists.length; i++) {
         let artist_name = rsp.artists[i].name;
         let decoded_artist_name = decodeURI(artist_name);
-        // artist = artist.split("-");
-        let artist_dash = artist_name.replace(/ /g,"-");
-        // let encoded_artist_dash = fixedEncodeURI(artist_name).replace(/ /g,"-");
-        // let artist_url = url.parse(encoded_artist_dash, true).path;
-        json_file.push({"url": `http://localhost:3000/seatgeek/${artist_dash}`, "artist_name": decoded_artist_name});
+        let artist_dash = decoded_artist_name.replace(/ /g,"-");
 
-        // s += '<div>';
-        // s += '<a href=' + `http://localhost:3000/seatgeek/${artist_dash}` + '>' + artist_name + '</a>';
-        // s += '</div>';
+        json_file.push({"artist_dash": artist_dash, "name": decoded_artist_name});
     }
     return json_file;
 }
-
-// function createPage(title, rsp) {
-//     const str = '<!DOCTYPE html>' + 
-//             '<html><head><title>Discogs JSON</title></head>' + 
-//             '<body>' + 
-//             '<h1>' + title + '</h1>' + 
-//             rsp +
-//             '</body></html>';
-//     return str;
-// }
-
-// function fixedEncodeURI(str) {
-//     return encodeURI(str).replace(/%5B/g, '[').replace(/%5D/g, ']');
-// }
 
 module.exports = router;

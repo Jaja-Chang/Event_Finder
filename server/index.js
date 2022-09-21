@@ -17,11 +17,6 @@ app.use('/musicbrainz', musicbrainzRouter)
 
 app.use(express.static('../client/build'))
 
-// What's your favorite animal?
-app.get('/api', (req, res) => {
-  res.json({ answer: 'Llama' })
-}) 
-
 // New api routes should be added here.
 // It's important for them to be before the `app.use()` call below as that will match all routes.
 app.use( (req, res) => {

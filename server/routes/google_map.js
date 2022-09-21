@@ -7,7 +7,6 @@ const router = express.Router();
 
 router.get('/:query', async (req, res) => {
     const hotelUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${g_map.key}&location=${req.params.query}&type=hotel&radius=1500`;
-    const seatgeekLocalPage = 'http://localhost:3000/seatgeek';
 
     let placeIds = await getHotelsId(hotelUrl);
     let hotels = [];
