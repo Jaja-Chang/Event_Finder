@@ -1,0 +1,64 @@
+.App {
+  font-family: monospace;
+  text-align: left;
+  align-items: center;
+}
+
+.header {
+  text-align: left;
+  background-color: #fff8e7;
+  padding: 40px;
+}
+
+.header-title {
+  font-size: 50px;
+  text-shadow: 2px 2px 1px #cccccc;
+  font-weight: bolder;
+  color: #785533;
+}
+
+.description {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.search {
+  align-items: center;
+}
+
+.input-bar {
+  padding: 40px;
+  width: auto;
+}
+
+.container {
+  display: flex;
+}
+
+.search-result {
+  font-size: x-large;
+  text-align: left;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-right: 40px;
+  padding-left: 40px;
+  width: 30%;
+}
+
+.event-result {
+  align-items: center;
+  flex-grow: 1;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-right: 40px;
+  padding-left: 40px;
+}
+
+.event-card {
+  background-color: #fff8e7;
+  border-radius: 8px;
+  font-size: 105%;
+  text-align: left;
+  padding: 20px;
+  margin: 20px 10px 20px 10px;
+}

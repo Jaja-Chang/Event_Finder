@@ -41,26 +41,5 @@ const s3Key = `10567186-${key}`;
     }
 })();
 
-// async function viewCount() {
-//     try {
-//         const bucketLen = (await s3.listObjects({ Bucket: bucketName }).promise()).Contents.length;
-//         let count = "";
-//         if (bucketLen === 0) {
-//             const objectParams = {Bucket: bucketName, Key: s3Key, Body: '0'};
-//             await s3.putObject(objectParams).promise();
-//             count = objectParams.Body;
-//         } else {
-//             count = (await s3.getObject({ Bucket: bucketName, Key: s3Key }).promise()).Body;
-//             count = (parseInt(count) + 1).toString();
-//             await s3.putObject({ Bucket: bucketName, Key: s3Key, Body: count }).promise();
-//         }
-//         return {"view_count": count};
-        
-//     } catch (err) {
-//         console.log(err, err.stack);
-//     }
-// }
-
-
 
 module.exports = router;
