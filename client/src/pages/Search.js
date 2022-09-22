@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { styled, Paper, InputBase, IconButton, Box, ToggleButtonGroup, ToggleButton, Button } from '@mui/material';
+import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import SearchIcon from '@mui/icons-material/Search';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(() => ({
@@ -95,9 +96,12 @@ export default function Search() {
         <div>Time: UTC {event.time}</div>
         <div>Venue: {event.venue}</div>
         <div>Location: {event.location}</div>
-        <Button variant="contained" onClick={handleDisplayHotels}>
-          HOTEL NEARBY
-        </Button>
+        <div>
+          <Button variant="contained" onClick={handleDisplayHotels}>
+            HOTEL NEARBY
+          </Button>
+        </div>
+        
         { displayHotels ? <Hotels url={hotelsUrl} /> : null}
       </Box>
     );
@@ -138,8 +142,9 @@ export default function Search() {
         <div class="header">
           <div class="header-title">FIND EVENTS</div>
           <div class="description">Find events with contries where the artists are from.</div>
-          <div>{numView} Views</div>
-          {/* <div><Counter url="/counter"/></div> */}
+          <div class="view-count">
+            <VisibilityRoundedIcon />{numView}
+          </div>
         </div>
         <div class="input-bar">
           <Paper

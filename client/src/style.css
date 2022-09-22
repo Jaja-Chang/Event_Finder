@@ -22,6 +22,21 @@
   font-weight: bold;
 }
 
+.view-count {
+  background-color: #47331f;
+  border-radius: 8px;
+  color: #ffffff;
+  width: fit-content;
+  padding: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 20px;
+  margin-left: 90%;
+  display: grid;
+  grid-auto-flow: column;
+  grid-column-gap: 5px;
+}
+
 .search {
   align-items: center;
 }
@@ -59,6 +74,7 @@
   border-radius: 8px;
   font-size: 105%;
   text-align: left;
+  box-shadow: 3px 3px 1px #cccccc;
   padding: 20px;
-  margin: 20px 10px 20px 10px;
+  margin: 20px 10px;
 }
