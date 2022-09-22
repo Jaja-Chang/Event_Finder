@@ -119,29 +119,33 @@ export default function Search() {
     return [];
   }
 
-  const Counter = ({ url }) => {
-    const [ numView, setNumView ] = useState(null);
-
-    // fetch("/counter")
-    //   .then(res => res.json())
-    //   .then(res => setNumView(res))
-    //   .catch(() => null);
-
-    useEffect(() => {
-      console.log(url);
-      fetch(url)
-        .then(res => res.json())
-        .then(res => setNumView(res))
-        .catch(() => null);
-    }, [url]);
-  
-    if (numView !== null) {
-      return (
-        <div>{numView.view_count} Views</div>
-      )
-    }
-    return null;
+  function Counter() {
+    return fetch('\counter')
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res);
+          return res.view_count;
+        })
   }
+
+  // const Counter = ({ url }) => {
+  //   const [ numView, setNumView ] = useState(null);
+
+  //   useEffect(() => {
+  //     console.log(url);
+  //     fetch(url)
+  //       .then(res => res.json())
+  //       .then(res => setNumView(res))
+  //       .catch(() => null);
+  //   }, [url]);
+  
+  //   if (numView !== null) {
+  //     return (
+  //       <div>{numView.view_count} Views</div>
+  //     )
+  //   }
+  //   return null;
+  // }
 
 
   function updateCountry(input) {
@@ -158,7 +162,8 @@ export default function Search() {
         <div class="header">
           <div class="header-title">FIND EVENTS</div>
           <div class="description">Find events with contries where the artists are from.</div>
-          <div><Counter url="/counter"/></div>
+          <div>{Counter} Views</div>
+          {/* <div><Counter url="/counter"/></div> */}
         </div>
         <div class="input-bar">
           <Paper
