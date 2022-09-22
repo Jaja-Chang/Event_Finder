@@ -46,20 +46,7 @@ function getEventInfo(rsp) {
                         "location": address_str,
                         "url": current_event.url,
                         "latlon": vanue_latlon});
-        
-        // current_string = '<div>' + 
-        //                     '<div>' + 
-        //                         current_event.title + 
-        //                     '</div>' + 
-        //                     '<div>' +
-        //                         'Time (UTC): ' + current_event.datetime_utc + '<br>' + 
-        //                         'Venue: ' +  current_event.venue.name + '<br>' + 
-        //                         'Location: ' + address_str + '<br>' + 
-        //                         '<a href=' + current_event.url + '>More information here</a><br>' + 
-        //                         '<a href=' + `http://localhost:3000/googlemap/${vanue_latlon}` + '>Hotel nearby</a><br>' + 
-        //                         '<br>' + 
-        //                     '</div>';
-        // s += current_string;
+
     }
     return json_file;
 }

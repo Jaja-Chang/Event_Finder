@@ -1,6 +1,6 @@
 const path = require('path');
 const express = require('express');
-const discogsRouter = require('./routes/discogs');
+const bucketRouter = require('./routes/bucket_counter')
 const seatgeekRouter = require('./routes/seatgeek');
 const googlemapRouter = require('./routes/google_map');
 const musicbrainzRouter = require('./routes/musicbrainz');
@@ -10,7 +10,7 @@ const hostname = '127.0.0.1';
 const port = 3000;
 
 // Serve out any static assets correctly
-app.use('/discogs', discogsRouter)
+app.use('/counter', bucketRouter)
 app.use('/seatgeek', seatgeekRouter)
 app.use('/googlemap', googlemapRouter)
 app.use('/musicbrainz', musicbrainzRouter)
