@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { styled, Paper, InputBase, IconButton, Box, ToggleButtonGroup, ToggleButton, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-// import Paper from '@mui/material/Paper';
-// import InputBase from '@mui/material/InputBase';
-// import IconButton from '@mui/material/IconButton';
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(() => ({
   border: '0px',
@@ -17,6 +14,14 @@ export default function Search() {
   const [eventsUrl, setEventsUrl] = useState("");
   const [hotelsUrl, setHotelsUrl] = useState("");
   const [view, setView] = useState("");
+  const [ numView, setNumView ] = useState(null);
+
+  useEffect(() => {
+    fetch('/counter')
+      .then(res => res.json())
+      .then(res => setNumView(res.view_count))
+      .catch(() => null);
+  }, []);
 
   function updateEvents(artist){
     setView(artist.name);
@@ -119,35 +124,6 @@ export default function Search() {
     return [];
   }
 
-  function Counter() {
-    return fetch('\counter')
-        .then((res) => res.json())
-        .then((res) => {
-          console.log(res);
-          return res.view_count;
-        })
-  }
-
-  // const Counter = ({ url }) => {
-  //   const [ numView, setNumView ] = useState(null);
-
-  //   useEffect(() => {
-  //     console.log(url);
-  //     fetch(url)
-  //       .then(res => res.json())
-  //       .then(res => setNumView(res))
-  //       .catch(() => null);
-  //   }, [url]);
-  
-  //   if (numView !== null) {
-  //     return (
-  //       <div>{numView.view_count} Views</div>
-  //     )
-  //   }
-  //   return null;
-  // }
-
-
   function updateCountry(input) {
     if (input != null) {
       setCountry(input);
@@ -162,7 +138,7 @@ export default function Search() {
         <div class="header">
           <div class="header-title">FIND EVENTS</div>
           <div class="description">Find events with contries where the artists are from.</div>
-          <div>{Counter} Views</div>
+          <div>{numView} Views</div>
           {/* <div><Counter url="/counter"/></div> */}
         </div>
         <div class="input-bar">
