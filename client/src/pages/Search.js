@@ -31,33 +31,6 @@ export default function Search() {
       .catch(() => null);
   }, [artistUrl]);
 
-
-  // const Artists = ({ url }) => {
-  //   const [ artists, setArtists ] = useState([]);
-    
-  //   useEffect(() => {
-  //     fetch(url)
-  //       .then(res => res.json())
-  //       .then(res => setArtists(res))
-  //       .catch(() => null);
-  //   }, [url]);
-  
-  //   if (artists.length !== 0) {
-  //     return (
-  //       <ToggleButtonGroup
-  //         orientation="vertical"
-  //         value={view}
-  //         exclusive
-  //       >{artists.map((artist) => 
-  //         <StyledToggleButton aria-label={artist.name} value={artist.name} onClick={() => updateEvents(artist)}>
-  //           {artist.name}
-  //         </StyledToggleButton>)}
-  //       </ToggleButtonGroup>
-  //     )
-  //   }
-  //   return [];
-  // }
-
   // const Artists = ({ url }) => {
   //   const [ artists, setArtists ] = useState([]);
     
@@ -84,31 +57,42 @@ export default function Search() {
   //   return [];
   // }
 
-  const EventList = ({ url }) => {
-    const [ events, setEvents ] = useState([]);
 
-    useEffect(() => {
-      console.log(url);
-      fetch(url)
-        .then(res => res.json())
-        .then(res => setEvents(res))
-        .catch(() => null);
-    }, [url]);
+  const [ events, setEvents ] = useState([]);
+
+  useEffect(() => {
+    fetch(eventsUrl)
+      .then(res => res.json())
+      .then(res => setEvents(res))
+      .catch(() => null);
+  }, [eventsUrl]);
+
+
+  // const EventList = ({ url }) => {
+  //   const [ events, setEvents ] = useState([]);
+
+  //   useEffect(() => {
+  //     console.log(url);
+  //     fetch(url)
+  //       .then(res => res.json())
+  //       .then(res => setEvents(res))
+  //       .catch(() => null);
+  //   }, [url]);
   
-    if (events.length !== 0) {
-      console.log("some events");
-      console.log(events);
-      return (
-        <div>{events.map((event) => 
-          <EventCard event={event} />
-        )}</div>
-      )
-    } else {
-      return (
-        <div class="event-result-label">There is no event. </div>
-      )
-    }
-  }
+  //   if (events.length !== 0) {
+  //     console.log("some events");
+  //     console.log(events);
+  //     return (
+  //       <div>{events.map((event) => 
+  //         <EventCard event={event} />
+  //       )}</div>
+  //     )
+  //   } else {
+  //     return (
+  //       <div class="event-result-label">There is no event. </div>
+  //     )
+  //   }
+  // }
 
   const EventCard = ({event}) => {
     console.log("EVENT: ", event);
@@ -199,8 +183,10 @@ export default function Search() {
               sx={{ ml: 1, flex: 1 }}
               placeholder="Search by country"
               inputProps={{ 'aria-label': 'search by country' }}
-              onChange={ (e) => {updateCountry(e.target.value)} }
-            />
+              onChange={ (e) => {
+                setDisplayArtists(false);
+                updateCountry(e.target.value);
+            }}/>
             <IconButton 
               type="button" 
               sx={{ p: '10px' }} 
@@ -246,7 +232,16 @@ export default function Search() {
         { (displayArtists & view !== "") ?
         
           <div class="event-result">
-            <EventList url={eventsUrl} />
+            {/* <EventList url={eventsUrl} /> */}
+
+            {
+              (events.length !== 0) ?
+                <div>{events.map((event) => 
+                  <EventCard event={event} />
+                )}</div>
+              :
+              <div class="event-result-label">There is no event. </div>
+            }
           </div>
           :
           null
