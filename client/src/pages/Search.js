@@ -21,21 +21,21 @@ export default function Search() {
     fetch('/counter')
       .then(res => res.json())
       .then(res => setNumView(res.view_count))
-      .catch(() => null);
+      .catch((e) => console.log(e));
   }, []);
 
   useEffect(() => {
     fetch(artistUrl)
       .then(res => res.json())
       .then(res => setArtists(res))
-      .catch(() => null);
+      .catch((e) => console.log(e));
   }, [artistUrl]);
 
   useEffect(() => {
     fetch(eventsUrl)
       .then(res => res.json())
       .then(res => setEvents(res))
-      .catch(() => null);
+      .catch((e) => console.log(e));
   }, [eventsUrl]);
 
 
@@ -84,7 +84,7 @@ export default function Search() {
       fetch(url)
         .then(res => res.json())
         .then(res => setHotels(res))
-        .catch(() => null);
+        .catch((e) => console.log(e));
     }, [url]);
   
     if (hotels !== []) {
@@ -181,7 +181,7 @@ export default function Search() {
                 </StyledToggleButton>)}
               </ToggleButtonGroup>
               :
-              <div>There is no artist in { country }.</div>
+              <div>It takes a while to load or there is no artist in { country }.</div>
             }
           </div>
         :
@@ -198,7 +198,7 @@ export default function Search() {
                   <EventCard event={event} />
                 )}</div>
               :
-              <div class="event-result-label">There is no event. </div>
+              <div class="event-result-label">It takes a while to load or there is no event. </div>
             }
           </div>
           :
