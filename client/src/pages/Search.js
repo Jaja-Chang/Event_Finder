@@ -22,36 +22,67 @@ export default function Search() {
       .catch(() => null);
   }, []);
 
-  function updateEvents(artist){
-    setView(artist.name);
-    setEventsUrl(`/seatgeek/${artist.artist_dash}`);
-  }
-
-  const Artists = ({ url }) => {
-    const [ artists, setArtists ] = useState([]);
+  const [ artists, setArtists ] = useState([]);
     
-    useEffect(() => {
-      fetch(url)
-        .then(res => res.json())
-        .then(res => setArtists(res))
-        .catch(() => null);
-    }, [url]);
+  useEffect(() => {
+    fetch(artistUrl)
+      .then(res => res.json())
+      .then(res => setArtists(res))
+      .catch(() => null);
+  }, [artistUrl]);
+
+
+  // const Artists = ({ url }) => {
+  //   const [ artists, setArtists ] = useState([]);
+    
+  //   useEffect(() => {
+  //     fetch(url)
+  //       .then(res => res.json())
+  //       .then(res => setArtists(res))
+  //       .catch(() => null);
+  //   }, [url]);
   
-    if (artists !== []) {
-      return (
-        <ToggleButtonGroup
-          orientation="vertical"
-          value={view}
-          exclusive
-        >{artists.map((artist) => 
-          <StyledToggleButton aria-label={artist.name} value={artist.name} onClick={() => updateEvents(artist)}>
-            {artist.name}
-          </StyledToggleButton>)}
-        </ToggleButtonGroup>
-      )
-    }
-    return [];
-  }
+  //   if (artists.length !== 0) {
+  //     return (
+  //       <ToggleButtonGroup
+  //         orientation="vertical"
+  //         value={view}
+  //         exclusive
+  //       >{artists.map((artist) => 
+  //         <StyledToggleButton aria-label={artist.name} value={artist.name} onClick={() => updateEvents(artist)}>
+  //           {artist.name}
+  //         </StyledToggleButton>)}
+  //       </ToggleButtonGroup>
+  //     )
+  //   }
+  //   return [];
+  // }
+
+  // const Artists = ({ url }) => {
+  //   const [ artists, setArtists ] = useState([]);
+    
+  //   useEffect(() => {
+  //     fetch(url)
+  //       .then(res => res.json())
+  //       .then(res => setArtists(res))
+  //       .catch(() => null);
+  //   }, [url]);
+  
+  //   if (artists !== []) {
+  //     return (
+  //       <ToggleButtonGroup
+  //         orientation="vertical"
+  //         value={view}
+  //         exclusive
+  //       >{artists.map((artist) => 
+  //         <StyledToggleButton aria-label={artist.name} value={artist.name} onClick={() => updateEvents(artist)}>
+  //           {artist.name}
+  //         </StyledToggleButton>)}
+  //       </ToggleButtonGroup>
+  //     )
+  //   }
+  //   return [];
+  // }
 
   const EventList = ({ url }) => {
     const [ events, setEvents ] = useState([]);
@@ -144,6 +175,11 @@ export default function Search() {
       setCountry("");
     }
   }
+
+  function updateEvents(artist){
+    setView(artist.name);
+    setEventsUrl(`/seatgeek/${artist.artist_dash}`);
+  }
   
     return (
       <div class="search">
@@ -187,7 +223,21 @@ export default function Search() {
         { (displayArtists) ?
           <div class="search-result">
             <div class="country-label">Artists in { country }</div>
-            <Artists url={ artistUrl } />
+            {/* <Artists url={ artistUrl } /> */}
+
+            { (artists.length !== 0) ?
+              <ToggleButtonGroup
+                orientation="vertical"
+                value={view}
+                exclusive
+              >{artists.map((artist) => 
+                <StyledToggleButton aria-label={ artist.name } value={ artist.name } onClick={() => updateEvents(artist)}>
+                  { artist.name }
+                </StyledToggleButton>)}
+              </ToggleButtonGroup>
+              :
+              <div>There is no artist in { country }.</div>
+            }
           </div>
         :
             null 
