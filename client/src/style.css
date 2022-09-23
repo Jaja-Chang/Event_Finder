@@ -7,7 +7,7 @@
 .header {
   text-align: left;
   background-color: #fff8e7;
-  padding: 40px;
+  padding: 40px 40px 20px 40px;
 }
 
 .header-title {
@@ -38,7 +38,7 @@
 }
 
 .search {
-  align-items: center;
+  width: auto;
 }
 
 .input-bar {
@@ -50,6 +50,12 @@
   display: flex;
 }
 
+.country-label {
+  text-align: center;
+  font-weight: bolder;
+  margin: 0px 0px 20px 0px;
+}
+
 .search-result {
   font-size: x-large;
   text-align: left;
@@ -58,6 +64,13 @@
   padding-right: 40px;
   padding-left: 40px;
   width: 30%;
+}
+
+.event-result-label {
+  text-align: center;
+  font-weight: bolder;
+  font-size: 20px;
+  margin: 0px 0px 20px 0px;
 }
 
 .event-result {
@@ -72,9 +85,19 @@
 .event-card {
   background-color: #fff8e7;
   border-radius: 8px;
-  font-size: 105%;
+  font-size: 135%;
   text-align: left;
-  box-shadow: 3px 3px 1px #cccccc;
+  box-shadow: 0.5px 2px 2px #cccccc;
   padding: 20px;
   margin: 20px 10px;
+}
+
+.event-card-buttons {
+  display: grid;
+  grid-auto-flow: column;
+}
+
+.event-title {
+  font-size: 150%;
+  font-weight: bolder;
 }

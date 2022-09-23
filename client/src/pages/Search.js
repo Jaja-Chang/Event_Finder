@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { styled, Paper, InputBase, IconButton, Box, ToggleButtonGroup, ToggleButton, Button } from '@mui/material';
+import { Paper, InputBase, IconButton, Box, ToggleButtonGroup } from '@mui/material';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import SearchIcon from '@mui/icons-material/Search';
+import { StyledButton } from "../components/StyledButton";
+import { StyledToggleButton } from "../components/StyledToggleButton";
 
-const StyledToggleButtonGroup = styled(ToggleButtonGroup)(() => ({
-  border: '0px',
-  fontFamily: 'monospace'
-}));
 
 export default function Search() {
-  const [country, setCountry] = useState("");
-  const [displayArtists, setDisplayArtists] = useState(false);
-  const [artistUrl, setArtistUrl] = useState("");
-  const [eventsUrl, setEventsUrl] = useState("");
-  const [hotelsUrl, setHotelsUrl] = useState("");
-  const [view, setView] = useState("");
+  const [ country, setCountry ] = useState("");
+  const [ displayArtists, setDisplayArtists ] = useState(false);
+  const [ artistUrl, setArtistUrl ] = useState("");
+  const [ eventsUrl, setEventsUrl ] = useState("");
+  const [ hotelsUrl, setHotelsUrl ] = useState("");
+  const [ view, setView ] = useState("");
   const [ numView, setNumView ] = useState(null);
 
   useEffect(() => {
@@ -41,15 +39,15 @@ export default function Search() {
   
     if (artists !== []) {
       return (
-        <StyledToggleButtonGroup
+        <ToggleButtonGroup
           orientation="vertical"
           value={view}
           exclusive
         >{artists.map((artist) => 
-          <ToggleButton aria-label={artist.name} value={artist.name} onClick={() => updateEvents(artist)}>
+          <StyledToggleButton aria-label={artist.name} value={artist.name} onClick={() => updateEvents(artist)}>
             {artist.name}
-          </ToggleButton>)}
-        </StyledToggleButtonGroup>
+          </StyledToggleButton>)}
+        </ToggleButtonGroup>
       )
     }
     return [];
@@ -66,14 +64,19 @@ export default function Search() {
         .catch(() => null);
     }, [url]);
   
-    if (events !== []) {
+    if (events.length !== 0) {
+      console.log("some events");
+      console.log(events);
       return (
         <div>{events.map((event) => 
           <EventCard event={event} />
         )}</div>
       )
+    } else {
+      return (
+        <div class="event-result-label">There is no event. </div>
+      )
     }
-    return [];
   }
 
   const EventCard = ({event}) => {
@@ -91,15 +94,20 @@ export default function Search() {
 
     return (
       <Box class="event-card">
-        <div>{event.title}</div>
+        <div class="event-title">{event.title}</div>
         <div>Date: {event.date}</div>
         <div>Time: UTC {event.time}</div>
         <div>Venue: {event.venue}</div>
         <div>Location: {event.location}</div>
-        <div>
-          <Button variant="contained" onClick={handleDisplayHotels}>
+        <div class="event-card-buttons">
+          <StyledButton onClick={() => {
+            window.open(event.url);
+          }}>
+            MORE INFO
+          </StyledButton>
+          <StyledButton onClick={handleDisplayHotels}>
             HOTEL NEARBY
-          </Button>
+          </StyledButton>
         </div>
         
         { displayHotels ? <Hotels url={hotelsUrl} /> : null}
@@ -178,7 +186,7 @@ export default function Search() {
 
         { (displayArtists) ?
           <div class="search-result">
-            <div>Artists in { country }</div>
+            <div class="country-label">Artists in { country }</div>
             <Artists url={ artistUrl } />
           </div>
         :
