@@ -1,20 +1,24 @@
 const express = require('express');
-const { response } = require('express');
-const https = require('https');
+// const { response } = require('express');
+// const https = require('https');
 const axios = require('axios');
 
 const router = express.Router();
 
 router.get('/:query', async (req, res) => {
-    const hotelUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${g_map.key}&location=${req.params.query}&type=hotel&radius=1500`;
-
+    // console.log(req.params.query);
+    const hotelUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?key=${g_map.key}&location=${req.params.query}&type=lodging&radius=1000`;
+    // console.log(hotelUrl);
     let placeIds = await getHotelsId(hotelUrl);
     let hotels = [];
 
     for (let i = 0; i < placeIds.length; i++) {
         let hotelInfo = await getHotelInfo(placeIds[i].place_id);
-        hotels.push(hotelInfo);
+        if (hotelInfo.rating !== "undefined" & hotelInfo.rating >= 3) {
+            hotels.push(hotelInfo);
+        }
     }
+    // console.log(hotels);
     res.json(hotels);
 })
 
@@ -26,7 +30,7 @@ function getHotelsId(url) {
     let ids = [];
     return axios.get(url)
         .then( (response) => {
-            for (let i = 1; i < response.data.results.length; i++) {
+            for (let i = 0; i < response.data.results.length; i++) {
                 ids.push({"name": `${response.data.results[i].name}`, "place_id": `${response.data.results[i].place_id}`});
             }
             return ids;
@@ -43,7 +47,7 @@ function getHotelInfo(placeId) {
             return {
                 "name": `${res.name}`, 
                 "address": `${res.formatted_address}`,
-                "phone_number": `${res.formatted_address}`,
+                "phone_number": `${res.international_phone_number}`,
                 "lat": `${res.geometry.location.lat}`,
                 "lon": `${res.geometry.location.lng}`,
                 "rating": `${res.rating}`,
@@ -56,21 +60,21 @@ function getHotelInfo(placeId) {
         })
 }
 
-function placeholder(url, res) {
-    axios.get(url)
-        .then( (response) => {
-            res.writeHead(response.status, {'content-type': 'text/html'}); 
-            return response.data;
-        })
-        .then( (rsp) => {
-            const s = createPage('Hotel Search', getNearbyHotels(rsp));
-            res.write(s);
-            res.end();
-        })
-        .catch( (error) => {
-            console.error(error);
-        })
-}
+// function placeholder(url, res) {
+//     axios.get(url)
+//         .then( (response) => {
+//             res.writeHead(response.status, {'content-type': 'text/html'}); 
+//             return response.data;
+//         })
+//         .then( (rsp) => {
+//             const s = createPage('Hotel Search', getNearbyHotels(rsp));
+//             res.write(s);
+//             res.end();
+//         })
+//         .catch( (error) => {
+//             console.error(error);
+//         })
+// }
 
 // function getNearbyHotels(rsp) {
 //     let s = "";

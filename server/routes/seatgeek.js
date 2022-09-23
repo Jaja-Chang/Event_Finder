@@ -27,7 +27,6 @@ const dis = {
 function getEventInfo(rsp) {
     let json_file = [];
 
-    s = '<div>There are ' + rsp.meta.total + ' events in total.</div>';
     for (let i = 0; i < rsp.events.length; i++) {
         let current_event = rsp.events[i];
         let address_str = current_event.venue.address + ', ' + 
@@ -51,14 +50,14 @@ function getEventInfo(rsp) {
     return json_file;
 }
 
-function createPage(title, rsp) {
-    const str = '<!DOCTYPE html>' + 
-            '<html><head><title>Discogs JSON</title></head>' + 
-            '<body>' + 
-            '<h1>' + title + '</h1>' + 
-            rsp + 
-            '</body></html>';
-    return str;
-}
+// function createPage(title, rsp) {
+//     const str = '<!DOCTYPE html>' + 
+//             '<html><head><title>Discogs JSON</title></head>' + 
+//             '<body>' + 
+//             '<h1>' + title + '</h1>' + 
+//             rsp + 
+//             '</body></html>';
+//     return str;
+// }
 
 module.exports = router;

@@ -8,8 +8,10 @@ import { StyledToggleButton } from "../components/StyledToggleButton";
 
 export default function Search() {
   const [ country, setCountry ] = useState("");
-  const [ displayArtists, setDisplayArtists ] = useState(false);
+  const [ artists, setArtists ] = useState([]);
   const [ artistUrl, setArtistUrl ] = useState("");
+  const [ displayArtists, setDisplayArtists ] = useState(false);
+  const [ events, setEvents ] = useState([]);
   const [ eventsUrl, setEventsUrl ] = useState("");
   const [ hotelsUrl, setHotelsUrl ] = useState("");
   const [ view, setView ] = useState("");
@@ -22,43 +24,12 @@ export default function Search() {
       .catch(() => null);
   }, []);
 
-  const [ artists, setArtists ] = useState([]);
-    
   useEffect(() => {
     fetch(artistUrl)
       .then(res => res.json())
       .then(res => setArtists(res))
       .catch(() => null);
   }, [artistUrl]);
-
-  // const Artists = ({ url }) => {
-  //   const [ artists, setArtists ] = useState([]);
-    
-  //   useEffect(() => {
-  //     fetch(url)
-  //       .then(res => res.json())
-  //       .then(res => setArtists(res))
-  //       .catch(() => null);
-  //   }, [url]);
-  
-  //   if (artists !== []) {
-  //     return (
-  //       <ToggleButtonGroup
-  //         orientation="vertical"
-  //         value={view}
-  //         exclusive
-  //       >{artists.map((artist) => 
-  //         <StyledToggleButton aria-label={artist.name} value={artist.name} onClick={() => updateEvents(artist)}>
-  //           {artist.name}
-  //         </StyledToggleButton>)}
-  //       </ToggleButtonGroup>
-  //     )
-  //   }
-  //   return [];
-  // }
-
-
-  const [ events, setEvents ] = useState([]);
 
   useEffect(() => {
     fetch(eventsUrl)
@@ -67,32 +38,6 @@ export default function Search() {
       .catch(() => null);
   }, [eventsUrl]);
 
-
-  // const EventList = ({ url }) => {
-  //   const [ events, setEvents ] = useState([]);
-
-  //   useEffect(() => {
-  //     console.log(url);
-  //     fetch(url)
-  //       .then(res => res.json())
-  //       .then(res => setEvents(res))
-  //       .catch(() => null);
-  //   }, [url]);
-  
-  //   if (events.length !== 0) {
-  //     console.log("some events");
-  //     console.log(events);
-  //     return (
-  //       <div>{events.map((event) => 
-  //         <EventCard event={event} />
-  //       )}</div>
-  //     )
-  //   } else {
-  //     return (
-  //       <div class="event-result-label">There is no event. </div>
-  //     )
-  //   }
-  // }
 
   const EventCard = ({event}) => {
     console.log("EVENT: ", event);
@@ -103,13 +48,14 @@ export default function Search() {
       }
       else {
         setDisplayHotels(true);
+        // console.log(event.latlon);
         setHotelsUrl(`/googlemap/${event.latlon}`);
       }
     };
 
     return (
       <Box class="event-card">
-        <div class="event-title">{event.title}</div>
+        <div class="info-title">{event.title}</div>
         <div>Date: {event.date}</div>
         <div>Time: UTC {event.time}</div>
         <div>Venue: {event.venue}</div>
@@ -143,8 +89,20 @@ export default function Search() {
   
     if (hotels !== []) {
       return (
-        <div>{hotels.map((hotel) => 
-          <p>{hotel.address}</p>
+        <div>{hotels.map((hotel) =>
+          <Box class="hotel-card">
+            <div class="info-title">{hotel.name}</div>
+            <div>Phone number: {hotel.phone_number}</div>
+            <div>Address: {hotel.address}</div>
+            <div>Rating: {hotel.rating}</div>
+            <div class="event-card-buttons">
+              <StyledButton onClick={() => {
+                window.open(hotel.url);
+              }}>
+                SHOW IN GOOGLE MAP
+              </StyledButton>
+            </div>
+          </Box> 
         )}</div>
       )
     }
@@ -186,6 +144,8 @@ export default function Search() {
               onChange={ (e) => {
                 setDisplayArtists(false);
                 updateCountry(e.target.value);
+                setArtists([]);
+                setEvents([]);
             }}/>
             <IconButton 
               type="button" 
@@ -209,8 +169,7 @@ export default function Search() {
         { (displayArtists) ?
           <div class="search-result">
             <div class="country-label">Artists in { country }</div>
-            {/* <Artists url={ artistUrl } /> */}
-
+      
             { (artists.length !== 0) ?
               <ToggleButtonGroup
                 orientation="vertical"
@@ -226,13 +185,12 @@ export default function Search() {
             }
           </div>
         :
-            null 
-        }
+        null 
+      }
 
         { (displayArtists & view !== "") ?
         
           <div class="event-result">
-            {/* <EventList url={eventsUrl} /> */}
 
             {
               (events.length !== 0) ?
